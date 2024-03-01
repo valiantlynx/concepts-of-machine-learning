@@ -1,10 +1,12 @@
-\documentclass{article}
-\usepackage[utf8]{inputenc}
-\usepackage{amsmath}
+\documentclass[11pt, a4paper]{article}
+\usepackage{times}
 \usepackage{geometry}
-\geometry{a4paper, margin=1in}
+\geometry{a4paper}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{graphicx}
 
-\title{Exercise 2}
+\title{Assignment 1 - Introduction to Machine Learning}
 \author{Gormery K. Wanjiru}
 \date{\today}
 
@@ -12,52 +14,97 @@
 
 \maketitle
 
-\section*{Question 1}
-Suppose you have a mechanical clock that has a minute hand, but no hour hand. You take a photograph of the clock when the minute hand points at 16:00 AM and then take additional photos every 55 minutes. Upon showing those photos, in time order, to someone:
-\begin{enumerate}
-    \item What would that person think about the direction of motion of the minute hand as time advances?
-    \begin{enumerate}
-        \item They would think that time is moving backwards. Every time you take a photo, the minute hand would point to a number five minutes less than the earlier one.
-        \item Upon showing a person the images in time order it would appear that the minute hand is going counter-clockwise.
-    \end{enumerate}
-    \item How often would you take photos, measured in photos/hour so that the successive photos show proper (true) clockwise minute-hand rotation?
-    \begin{enumerate}
-        \item You would have to take at least 3 or more photos/hour.
-        \item Thinking of the hour as 1 period, you need at least 2 samples in each period to capture the true clockwise minute hand rotation.
-    \end{enumerate}
-\end{enumerate}
+\begin{abstract}
+This report aims to provide a comprehensive understanding of the three main types of machine learning: supervised learning, unsupervised learning, and reinforcement learning. Furthermore, it delves into the key concepts of classification, regression, cross-validation, and their applications in solving real-world problems. Through detailed exploration and comparison of various algorithms within these categories, this report tries to highlight their use cases, advantages, and limitations. These are what i know are most important when it comes to the two main subjects of this report namely, Supervised and Unsupervised learning.
+\end{abstract}
 
-\section*{Question 2}
-Assume we sampled a continuous \( x(t) \) signal and obtained 103 time domain samples. What important parameter is missing in order to analyze \( x(t) \)?
-\begin{enumerate}
-    \item The important parameter missing in order to analyze \( x(t) \) is the sampling rate.
-    \item Without the sampling rate, we know we took 103 samples, but we have no idea over what period of time those samples were taken, which limits our ability to analyze the signal in the frequency domain or to reproduce the continuous signal from these samples.
-\end{enumerate}
 
-\section*{Question 3}
-Consider a continuous time-domain sine wave whose cyclic frequency is 1000Hz, which is defined by \( x(t) = \cos(2 \pi \cdot 1000t + \frac{\pi}{7}) \).
-\begin{enumerate}
-    \item Write the equation for the discrete \( x(n) \) sequence at sampling frequency 4000Hz.
-    \begin{enumerate}
-        \item The discrete sequence \( x(n) \) will be defined as \( x(n) = \cos\left(\frac{5 \pi \cdot 1000n}{4000} + \frac{\pi}{7}\right) \) which simplifies to \( x(n) = \cos\left(\frac{\pi}{2} \cdot n + \frac{\pi}{7}\right) \).
-    \end{enumerate}
-    \item Write the equation for the discrete \( x(n) \) sequence at sampling frequency 1500Hz.
-    \begin{enumerate}
-        \item The discrete sequence \( x(n) \) will be defined as \( x(n) = \cos\left(\frac{5 \pi \cdot 1000n}{1500} + \frac{\pi}{7}\right) \) which simplifies to \( x(n) = \cos\left(\frac{4\pi}{3} \cdot n + \frac{\pi}{7}\right) \).
-    \end{enumerate}
-\end{enumerate}
+\section{Introduction}
+Let's get right to it. There are two main types of learning this report talks about. That is Supervised and Unsupervised learning. So what's the difference between the two? Well, simply put
+\begin{quote}
+\textbf{Supervised learning} uses labeled input and output data, while \textbf{Unsupervised learning} doesn't.
+\end{quote}
+This is a quote from Martin Keen of IBM Technology directly, which I really like. Beyond this distinction, Supervised learning algorithms learn from a dataset that includes both the inputs and the desired outputs, leveraging this data to learn a mapping from inputs to outputs. This method is pivotal for tasks such as classification and regression. Unsupervised learning, on the other hand, deals with data without labels, aiming to model the underlying structure or distribution in the data to learn more about the data itself. It's essential for clustering, dimensionality reduction, and association rule learning, providing insights into the data's intrinsic patterns and relationships without pre-existing labels.
+\section{Supervised Learning}
+Supervised learning algorithms learn from labeled training data, aiding in predicting outcomes for unforeseen data. This means the algorithm knows what the correct output is. Key concepts are \textbf{classification} and \textbf{regression}.
 
-\section*{Question 4}
-A signal \( x(t) = \cos(5 \pi \cdot 400t) \) is sampled at the sampling rate \( f_s = 2000\,Hz \). The sampled signal \( x(n) \) can be expressed as a sum of a positive rotating and a negative rotating pointer.
-\begin{enumerate}
-    \item How many samples does it take for the pointers to make a full rotation?
-    \begin{enumerate}
-        \item Considering the frequency of the signal (800Hz) and the sampling rate \( f_s = 2000\,Hz \), it takes \(\frac{f_s}{2 \cdot \text{frequency of the signal}} = \frac{2000}{2 \cdot 800} = 1.25\) samples for the pointers to make a full rotation. Since the number of samples must be an integer, it would take 2 samples for a complete cycle.
-    \end{enumerate}
-    \item How many radians will the pointers change from one sample to the next?
-    \begin{enumerate}
-        \item The frequency of the signal is 800Hz and the sampling rate is 2000Hz, therefore, the phase change between samples can be calculated as \( 2\pi \cdot \frac{800}{2000} = 0.8\pi \) radians. Hence, the pointers will change by \( 0.8\pi \) radians from one sample to the next.
-    \end{enumerate}
-\end{enumerate}
+\subsection{Algorithms Comparison}
+\begin{itemize}
+    
+\item \textbf{k-Nearest Neighbors (k-NN):} The k-NN algorithm operates by identifying the 'k' closest data points to a given input point and uses these to perform either a majority vote (in classification) or an averaging (in regression) to predict the output. It's especially useful in scenarios like customer segmentation, where businesses categorize customers based on similarities, or in fraud detection, by comparing new transactions against known fraudulent patterns.
+
+\item \textbf{Decision Trees:} This algorithm uses entropy and information gain to construct a tree that models decisions. Starting from the root, each node represents a "question" on an attribute, branching out based on answers, leading to a decision at the leaves. An application example could be loan approval prediction, where various attributes like credit score and income level determine the loan's approval or denial.
+
+\item \textbf{Logistic Regression:} It utilizes the sigmoid function to estimate probabilities, offering a binary outcome (1/0, Yes/No). This makes it ideal for situations like email spam detection, where emails are classified as spam or not spam, or disease diagnosis, predicting the likelihood of a disease based on patient data.
+\end{itemize}
+
+\subsection{Classification and Regression}
+Classification involves categorizing data into predefined groups, while regression deals with predicting a continuous quantity. For example, classifying emails as spam or not is a classification problem, whereas predicting house prices based on features like size and location is a regression task.
+
+\subsection{Application}
+To solve a supervised learning problem, such as email spam detection, one would first collect and label a dataset of emails as spam or not spam. Next, a classification algorithm like logistic regression could be trained on this dataset. The model's performance can be evaluated using cross-validation techniques (more in detail later on) to ensure it generalizes well to unseen data.
+
+\section{Unsupervised Learning}
+Unlike supervised learning, unsupervised learning algorithms infer patterns from unlabeled data.
+
+\subsection{Algorithms Comparison}
+\begin{itemize}
+    \item \textbf{k-Means Clustering:} works by initially selecting k points as cluster centers. Data points are then assigned to the nearest cluster based on the Euclidean distance. After all points are assigned, cluster centers are recalculated as the mean of all points in the cluster. This process repeats until cluster assignments no longer change. An advanced application is customer segmentation in retail, where purchasing patterns and behaviors cluster customers into distinct groups for tailored marketing.
+
+
+\item \textbf{Hierarchical Clustering:} Clusters are formed using a bottom-up approach (agglomerative) or a top-down approach (divisive), creating a dendrogram(tree) that illustrates data similarities. For instance, similar news articles can be grouped, aiding in the organization of content for news aggregators. It starts by treating each data point as a single cluster. Then, iteratively, the closest pairs of clusters are merged until only one cluster remains or a stopping criterion is met. This method is particularly useful for understanding the hierarchical grouping in data, such as organizing related research papers based on their content similarity, facilitating easier navigation through topics.
+
+\item \textbf{Principal Component Analysis (PCA):} PCA focuses on variance and covariance among features, reducing dimensionality by selecting principal components that retain the most variance. A practical application is face recognition, where it helps in identifying the most relevant features in facial images. in more detail, it identifies the axes that maximize the variance of the data, transforming the original data points into a new coordinate system with these axes as the basis vectors. This method effectively reduces the number of variables, retaining those that contain the most information. Might sound confusing but here is an example. In face recognition systems, PCA can reduce the dimensionality of facial images, isolating key features that distinguish one face from another while discarding irrelevant information(like everything else), thus improving recognition efficiency and accuracy.
+
+\end{itemize}
+
+\subsection{Clustering and Dimensionality Reduction}
+Clustering groups similar items together, which can help in customer segmentation or organizing large sets of data. Dimensionality reduction simplifies data without losing essential information, facilitating faster processing and visualization.
+
+\subsection{Application}
+For document clustering, one could use the k-means algorithm to group documents into clusters based on their textual content. This process involves extracting features from the text, such as the frequency of words, and then applying k-means to find clusters of documents with similar topics.
+
+\section{Reinforcement Learning}
+Reinforcement learning is about making sequences of decisions, learning to achieve a goal in a complex, uncertain environment. Usually the first thing i think about is how to treat a dog with a stick and a treat. It does something good, it gets a treat. Otherwise the stick
+
+\subsection{Basic Concepts and Algorithms}
+\begin{itemize}
+    \item \textbf{Q-learning:} This model-free algorithm focuses on learning the value (Q-value) of taking a given action in a particular state, aiming to maximize the total reward. It involves a balance between exploring new actions and exploiting known actions with the highest rewards. An example application is a navigating robot, which uses Q-learning to decide on movements that minimize the path to a destination while avoiding obstacles.
+    \item \textbf{SARSA (State-Action-Reward-State-Action):} SARSA, an on-policy reinforcement learning algorithm, updates its Q-values based on the action actually taken, as opposed to the maximum reward action. This approach is exemplified in gaming AI, where the algorithm learns strategies based on sequences of states and actions, adjusting to the consequences of its moves in real-time. Basicly, it's similar to Q-learning, but updates its values based on the action actually taken, making it an on-policy method.
+    
+\end{itemize}
+
+
+\subsection{Reward-Based Learning}
+Reinforcement learning differentiates itself by learning from interactions with an environment to achieve a goal, using rewards as feedback, unlike supervised learning which learns from afeedback mechanism. This approach is fundamentally different from supervised learning, where the learning process is guided by comparing the predictions with the actual labels.
+
+\subsection{Real-World Applications}
+Reinforcement learning has been applied in various domains, such as robotics for autonomous navigation, in games like AlphaGo for mastering complex strategies, and in recommendation systems where the system learns to recommend items users will likely enjoy.
+
+\subsection{Application}
+Solving a reinforcement learning problem, like training a robot to navigate obstacles, involves setting up an environment where the robot can experiment with different paths. The robot receives rewards for reaching its destination quickly and penalties for hitting obstacles. Techniques like Q-learning could be used to learn the best actions to take in different states based on the rewards received.
+
+\section{Cross-Validation and Dataset Splitting}
+
+\subsection{Importance of Cross-Validation}
+Cross-validation techniques are pivotal in preventing overfitting, a common pitfall where a model learns the noise in the training data to the extent that it performs poorly on new data. By using different parts of the data for training and testing, cross-validation allows for a more accurate assessment of how well a model generalizes to unseen datasets.
+
+\subsection{Techniques Comparison}
+\begin{itemize}
+\item \textbf{K-fold Cross-Validation:} This method is beneficial for its balance between computational efficiency and insight into the model's performance across different subsets of data. It's particularly useful when the dataset is large enough to be split multiple times but not so large that the process becomes computationally prohibitive.
+\item \textbf{Leave-One-Out Cross-Validation (LOOCV):} While offering detailed insight by using nearly all data for training, LOOCV can be computationally intensive, especially with very large datasets. It's best used when the dataset is small, and the computational cost is manageable.
+\item \textbf{Monte Carlo Cross-Validation:} This method introduces randomness in the selection of training and test sets, providing robustness against variance in dataset splits. It's preferred when the goal is to assess the model's performance across a wide range of potential training and testing scenarios, especially in datasets with inherent variability.
+\end{itemize}
+
+\subsection{Trade-Offs}
+The selection among these cross-validation techniques hinges on the dataset's size and the available computational resources. K-fold is generally preferred for its efficiency and balance, LOOCV for small datasets where computational expense is not a concern, and Monte Carlo for situations requiring robustness against data split variance. Each method offers a strategic approach to quantifying a model's ability to generalize, crucial for developing machine learning applications across various fields, including healthcare for predictive diagnostics, finance for risk assessment, and autonomous vehicles for navigation and safety protocols.
+
+
+\section{Ethical Considerations and Future Directions}
+From safeguarding privacy to ensuring AI systems are free from bias, the path forward requires thoughtful consideration. Meanwhile, the horizon is bright with advancements like autoML, langchain, ollama, etc, making AI more accessible, and deep learning pushing the boundaries of what's possible. As AI becomes a staple in our daily lives, enhancing decision-making and efficiency, we stand on the brink of a new era(and i'm loving it). Just a thought – if AI ever reaches general intelligence, let's hope they appreciate our use of reinforcement learning's \textbf{treat} more than they resent \textbf{stick}.
+
+
+\section{Conclusion}
+This report underscores the significance of understanding various machine learning methodologies and their application across different domains. The potential of machine learning to transform industries is immense, calling for ongoing research, some ethical scrutiny, and innovative thinking to unlock its full potential responsibly.
 
 \end{document}

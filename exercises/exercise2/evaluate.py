@@ -1,44 +1,37 @@
 import numpy as np
+import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 import matplotlib.pyplot as plt
-from exercises.exercise2.knn import  euclidean_distance,  predict_classification
+from knn_model import KNN  # Import the KNN class
 
+# Load the dataset
+data = pd.read_csv('diabetes.csv').values
 
-# Assuming the dataset is loaded into a NumPy array 'data'
-# Features are in columns 0-7, and the label is in column 8
-
-# Splitting dataset into features and target variable
 X = data[:, :-1]
 y = data[:, -1]
 
-# Handling missing values (if any)
-# For simplicity, replacing missing values with the mean of each column
 X[np.isnan(X)] = np.mean(X, axis=0)
 
-# Normalizing the data
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
-# Splitting the dataset into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.3, random_state=42)
 
-# Function to evaluate k-NN with different values of k
 def evaluate_knn(k_values):
     accuracies = []
     precisions = []
     recalls = []
     f1_scores = []
     
-    # Combine training features and target for simplicity in k-NN calculation
-    training_data = np.column_stack((X_train, y_train))
-
     for k in k_values:
-        predictions = [predict_classification(training_data, row, k) for row in X_test]
+        model = KNN(num_neighbors=k)
+        model.fit(X_train, y_train)
+        predictions = model.predict(X_test)
         accuracies.append(accuracy_score(y_test, predictions))
-        precisions.append(precision_score(y_test, predictions))
-        recalls.append(recall_score(y_test, predictions))
+        precisions.append(precision_score(y_test, predictions, zero_division=0))
+        recalls.append(recall_score(y_test, predictions, zero_division=0))
         f1_scores.append(f1_score(y_test, predictions))
 
     return accuracies, precisions, recalls, f1_scores

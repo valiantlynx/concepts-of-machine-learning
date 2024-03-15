@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 import matplotlib.pyplot as plt
-from knn_model import KNN  # Import the KNN class
+from knn import KNN  # Import the KNN class
 
 # Load the dataset
 data = pd.read_csv('diabetes.csv').values

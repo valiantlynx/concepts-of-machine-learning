@@ -4,15 +4,21 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 import matplotlib.pyplot as plt
-from knn import KNN  # Import the KNN class
+from knn import KNN  # Make sure to import your KNN class correctly
 
 # Load the dataset
-data = pd.read_csv('diabetes.csv').values
+df = pd.read_csv('diabetes.csv')
 
-X = data[:, :-1]
-y = data[:, -1]
+# Replace '0' with NaN in columns where '0' represents missing data
+columns_with_zeros = ['Glucose', 'BloodPressure', 'SkinThickness', 'Insulin', 'BMI']
+df[columns_with_zeros] = df[columns_with_zeros].replace(0, np.NaN)
 
-X[np.isnan(X)] = np.mean(X, axis=0)
+# Now replace NaN values with the mean of their respective columns
+df.fillna(df.mean(), inplace=True)
+
+# Extract X and y
+X = df.iloc[:, :-1].values
+y = df.iloc[:, -1].values
 
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)

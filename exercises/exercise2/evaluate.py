@@ -9,11 +9,14 @@ from knn import KNN  # Make sure to import your KNN class correctly
 # Load the dataset
 df = pd.read_csv('diabetes.csv')
 
-# Replace '0' with NaN in columns where '0' represents missing data
+# Specify columns where '0' values are biologically implausible and likely indicate missing data
 columns_with_zeros = ['Glucose', 'BloodPressure', 'SkinThickness', 'Insulin', 'BMI']
+
+# Replace '0' values with NaN for these specific columns
 df[columns_with_zeros] = df[columns_with_zeros].replace(0, np.NaN)
 
-# Now replace NaN values with the mean of their respective columns
+# Calculate the mean of each column, ignoring NaN values
+# Then fill NaN values with the calculated means
 df.fillna(df.mean(), inplace=True)
 
 # Extract X and y

@@ -19,36 +19,42 @@
 \begin{document}
 
 \maketitle
-
+\begin{abstract}
+  This report aims to provide a comprehensive understanding of the three main types of machine learning: supervised learning, unsupervised learning, and reinforcement learning. Furthermore, it delves into the key concepts of classification, regression, cross-validation, and their applications in solving real-world problems. Through detailed exploration and comparison of various algorithms within these categories, this report tries to highlight their use cases, advantages, and limitations. These are what i know are most important when it comes to the two main subjects of this report namely, Supervised and Unsupervised learning.
+  The structure of the report stricltly follows the structure of the assignment 1 we recieved.
+\end{abstract}
+  
 \newpage
 \tableofcontents
 \newpage
-\begin{abstract}
-This report aims to provide a comprehensive understanding of the three main types of machine learning: supervised learning, unsupervised learning, and reinforcement learning. Furthermore, it delves into the key concepts of classification, regression, cross-validation, and their applications in solving real-world problems. Through detailed exploration and comparison of various algorithms within these categories, this report tries to highlight their use cases, advantages, and limitations. These are what i know are most important when it comes to the two main subjects of this report namely, Supervised and Unsupervised learning.
-\end{abstract}
-
-
 \section{Introduction}
-Let's get right to it. There are two main types of learning this report talks about. That is Supervised and Unsupervised learning. So what's the difference between the two? Well, simply put
+Let's get right to it. There are two main types of learning this report talks about. That is Supervised and Unsupervised learning. These are also the two main approaches to use in Artificial intelligence(AI) and Machine learning(MI) So what's the difference between the two? Well, simply put
 \begin{quote}
 \textbf{Supervised learning} uses labeled input and output data, while \textbf{Unsupervised learning} doesn't.
 \end{quote}
+
 This is a quote from Martin Keen of IBM Technology directly, which I really like. Beyond this distinction, Supervised learning algorithms learn from a dataset that includes both the inputs and the desired outputs, leveraging this data to learn a mapping from inputs to outputs. This method is pivotal for tasks such as classification and regression. Unsupervised learning, on the other hand, deals with data without labels, aiming to model the underlying structure or distribution in the data to learn more about the data itself. It's essential for clustering, dimensionality reduction, and association rule learning, providing insights into the data's intrinsic patterns and relationships without pre-existing labels.
+This report will go through a few of these techniques and algorithms, otherwise  this reports word be a couple dozen pages long. Nonetheless its good to have a general idea of what is supervised and unsupervised learning.
 \section{Supervised Learning}
-Supervised learning algorithms learn from labeled training data, aiding in predicting outcomes for unforeseen data. This means the algorithm knows what the correct output is. Key concepts are \textbf{classification} and \textbf{regression}.
+Supervised learning algorithms learn from labeled training data, aiding in predicting outcomes for unforeseen data. Anotherwat to look at it is that the datasets themselves are designed to train the models. Supervised learning also allows for easy measuring of it perfomance, i.e accuracy over time. This is because the algorithm knows what the correct output is supposed to be. as long as one is careful not to mix training and testing datasets, this is an advantage. In my opinion, this also makes it more desirable(not necessarily better) at mission critical applications like health, etc, beacuse i(the creator) can predict/calculate the outcome, quite accurately.
+ Key concepts are \textbf{classification} and \textbf{regression}. These are also the main types problems that supervised learning is separated into. We explain both in more detail in \textbf{2.2}
 
 \subsection{Algorithms Comparison}
 \begin{itemize}
     
-\item \textbf{k-Nearest Neighbors (k-NN):} The k-NN algorithm operates by identifying the 'k' closest data points to a given input point and uses these to perform either a majority vote (in classification) or an averaging (in regression) to predict the output. It's especially useful in scenarios like customer segmentation, where businesses categorize customers based on similarities, or in fraud detection, by comparing new transactions against known fraudulent patterns.
+\item \textbf{k-Nearest Neighbors (k-NN):} Generally put, the k-nearest neighbors (KNN) algorithm is a simple, easy-to-implement supervised machine learning algorithm that can be used to solve both classification and regression problems. The k-NN algorithm operates by identifying the 'k' closest data points to a given input point and uses these to perform either a majority vote (in classification) or an averaging (in regression) to predict the output. this is because the  KNN assumes similar things exist in close proximity. It's especially useful in scenarios like customer segmentation, where businesses categorize customers based on similarities, or in fraud detection, by comparing new transactions against known fraudulent patterns.\\
+I understand it simplest as simple distance between points in a \\
+vectorspace(can be multidimentional), like in vektor database. The calculation is done simple with \underline{Distance between 2 points [3]}
 
 \item \textbf{Decision Trees:} This algorithm uses entropy and information gain to construct a tree that models decisions. Starting from the root, each node represents a "question" on an attribute, branching out based on answers, leading to a decision at the leaves. An application example could be loan approval prediction, where various attributes like credit score and income level determine the loan's approval or denial.
 
-\item \textbf{Logistic Regression:} It utilizes the sigmoid function to estimate probabilities, offering a binary outcome (1/0, Yes/No). This makes it ideal for situations like email spam detection, where emails are classified as spam or not spam, or disease diagnosis, predicting the likelihood of a disease based on patient data.
+\item \textbf{Logistic Regression:} Though its reffered to as regregression becuse it is an extension of linea regression, it mainly used for classification. It utilizes the sigmoid function to estimate probabilities, offering a binary outcome (1/0, Yes/No). The outcome is only two because we would, for example set the threshold as 0.5, anything above is one anything below would be 0. This makes it ideal for situations like email spam detection, where emails are classified as spam or not spam, or disease diagnosis, predicting the likelihood of a disease based on patient data.
 \end{itemize}
 
 \subsection{Classification and Regression}
-Classification involves categorizing data into predefined groups, while regression deals with predicting a continuous quantity. For example, classifying emails as spam or not is a classification problem, whereas predicting house prices based on features like size and location is a regression task.
+Classification involves categorizing data into predefined groups, while regression deals with predicting a continuous quantity. For example, classifying emails as spam or not, is a classification problem, whereas predicting house prices based on features like size and location is a regression task.\\
+while classification is simple enough, another explanation to understand regression is that it uses an algorithm(linear regression, logistic regression, polynomial regression etc.) to understand the relationship between dependent and independent variables.\\
+if you project scope knows all the variables then i would use classification, otherwise i'd use regression.
 
 \subsection{Application}
 To solve a supervised learning problem, such as email spam detection, one would first collect and label a dataset of emails as spam or not spam. Next, a classification algorithm like logistic regression could be trained on this dataset. The model's performance can be evaluated using cross-validation techniques (more in detail later on) to ensure it generalizes well to unseen data.
@@ -61,34 +67,35 @@ Unlike supervised learning, unsupervised learning algorithms infer patterns from
     \item \textbf{k-Means Clustering:} works by initially selecting k points as cluster centers. Data points are then assigned to the nearest cluster based on the Euclidean distance. After all points are assigned, cluster centers are recalculated as the mean of all points in the cluster. This process repeats until cluster assignments no longer change. An advanced application is customer segmentation in retail, where purchasing patterns and behaviors cluster customers into distinct groups for tailored marketing.
 
 
-\item \textbf{Hierarchical Clustering:} Clusters are formed using a bottom-up approach (agglomerative) or a top-down approach (divisive), creating a dendrogram(tree) that illustrates data similarities. For instance, similar news articles can be grouped, aiding in the organization of content for news aggregators. It starts by treating each data point as a single cluster. Then, iteratively, the closest pairs of clusters are merged until only one cluster remains or a stopping criterion is met. This method is particularly useful for understanding the hierarchical grouping in data, such as organizing related research papers based on their content similarity, facilitating easier navigation through topics.
+\item \textbf{Hierarchical Clustering:} Clusters are formed using a bottom-up approach (agglomerative) or a top-down approach (divisive), creating a tree(dendrogram) that illustrates data similarities. For instance, similar news articles can be grouped, aiding in the organization of content for news aggregators. It starts by treating each data point as a single cluster. Then, iteratively, the closest pairs of clusters are merged until only one cluster remains or a stopping criterion is met. This method is particularly useful for understanding the hierarchical grouping in data, such as organizing related research papers based on their content similarity, facilitating easier navigation through topics. this is the agglomerative technique, and the divisive techniques is the exact opposite of the agglomerative. the divisive technique is not much used in the real world.
 
-\item \textbf{Principal Component Analysis (PCA):} PCA focuses on variance and covariance among features, reducing dimensionality by selecting principal components that retain the most variance. A practical application is face recognition, where it helps in identifying the most relevant features in facial images. in more detail, it identifies the axes that maximize the variance of the data, transforming the original data points into a new coordinate system with these axes as the basis vectors. This method effectively reduces the number of variables, retaining those that contain the most information. Might sound confusing but here is an example. In face recognition systems, PCA can reduce the dimensionality of facial images, isolating key features that distinguish one face from another while discarding irrelevant information(like everything else), thus improving recognition efficiency and accuracy.
-
+\item \textbf{Principal Component Analysis (PCA):} PCA focuses on variance and covariance among features, reducing dimensionality by selecting principal components that retain the most variance. A practical application is face recognition, where it helps in identifying the most relevant features in facial images. in more detail, it identifies the axes that maximize the variance of the data, transforming the original data points into a new coordinate system with these axes as the basis vectors. This method effectively reduces the number of variables, retaining those that contain the most information. Might sound confusing(did to me) but here is an example. In face recognition systems, PCA can reduce the dimensionality of facial images, isolating key features that distinguish one face from another while discarding irrelevant information(like everything else), thus improving recognition efficiency and accuracy.
+Basically makes it only see what it needs to see and nothing else.
 \end{itemize}
 
 \subsection{Clustering and Dimensionality Reduction}
-Clustering groups similar items together, which can help in customer segmentation or organizing large sets of data. Dimensionality reduction simplifies data without losing essential information, facilitating faster processing and visualization.
+Clustering groups similar items together, which can help in customer segmentation or organizing large sets of data. Dimensionality reduction simplifies data without losing essential information, facilitating faster processing and visualization. if you've read til this point, you should have some idea of what it is from the algorithm comparisons. It groups "similar" datapoints(e.g in vectorspace) together so we can work on them as one entity
 
 \subsection{Application}
 For document clustering, one could use the k-means algorithm to group documents into clusters based on their textual content. This process involves extracting features from the text, such as the frequency of words, and then applying k-means to find clusters of documents with similar topics.
 
 \section{Reinforcement Learning}
-Reinforcement learning is about making sequences of decisions, learning to achieve a goal in a complex, uncertain environment. Usually the first thing i think about is how to treat a dog with a stick and a treat. It does something good, it gets a treat. Otherwise the stick
+Reinforcement learning is about making sequences of decisions, learning to achieve a goal in a complex, uncertain environment. Usually the first thing i think about is how to treat a dog with a stick and a treat. It does something good, it gets a treat. Otherwise the stick (i don,t know the origin of this saying. I believe its chinese)
 
 \subsection{Basic Concepts and Algorithms}
 \begin{itemize}
     \item \textbf{Q-learning:} This model-free algorithm focuses on learning the value (Q-value) of taking a given action in a particular state, aiming to maximize the total reward. It involves a balance between exploring new actions and exploiting known actions with the highest rewards. An example application is a navigating robot, which uses Q-learning to decide on movements that minimize the path to a destination while avoiding obstacles.
-    \item \textbf{SARSA (State-Action-Reward-State-Action):} SARSA, an on-policy reinforcement learning algorithm, updates its Q-values based on the action actually taken, as opposed to the maximum reward action. This approach is exemplified in gaming AI, where the algorithm learns strategies based on sequences of states and actions, adjusting to the consequences of its moves in real-time. Basicly, it's similar to Q-learning, but updates its values based on the action actually taken, making it an on-policy method.
+    
+    \item \textbf{SARSA (State-Action-Reward-State-Action):} SARSA, an on-policy reinforcement learning algorithm, updates its Q-values based on the action actually taken, as opposed to the maximum reward action. This approach is most used/useful in gaming AI, where the algorithm learns strategies based on sequences of states and actions, adjusting to the consequences of its moves in real-time. Basicly, it's similar to Q-learning, but updates its values based on the action actually taken, making it an on-policy method.
     
 \end{itemize}
 
 
 \subsection{Reward-Based Learning}
-Reinforcement learning differentiates itself by learning from interactions with an environment to achieve a goal, using rewards as feedback, unlike supervised learning which learns from afeedback mechanism. This approach is fundamentally different from supervised learning, where the learning process is guided by comparing the predictions with the actual labels.
+Reinforcement learning differentiates itself by learning from interactions with an environment to achieve a goal, using rewards as feedback, unlike supervised learning which learns from a feedback mechanism. This approach is fundamentally different from supervised learning, where the learning process is guided by comparing the predictions with the actual labels and yield to unexpected outcomes that sometimes we wouldn't have thought of.
 
 \subsection{Real-World Applications}
-Reinforcement learning has been applied in various domains, such as robotics for autonomous navigation, in games like AlphaGo for mastering complex strategies, and in recommendation systems where the system learns to recommend items users will likely enjoy.
+Reinforcement learning has been applied in various domains, such as robotics for autonomous navigation, in games like AlphaGo for mastering complex strategies, and in recommendation systems where the system learns to recommend items users will likely enjoy. I find it more fun to play around with as it more mysterious. I mostly found it useful in game automation, or generally when i don't know what to do i test first with reinforcement learning, out of it i get different outputs that i might not, or might have thought about. From which i understand my task more and naturally what best to do.
 
 \subsection{Application}
 Solving a reinforcement learning problem, like training a robot to navigate obstacles, involves setting up an environment where the robot can experiment with different paths. The robot receives rewards for reaching its destination quickly and penalties for hitting obstacles. Techniques like Q-learning could be used to learn the best actions to take in different states based on the rewards received.
@@ -100,28 +107,81 @@ Cross-validation techniques are pivotal in preventing overfitting, a common pitf
 
 \subsection{Techniques Comparison}
 \begin{itemize}
-\item \textbf{K-fold Cross-Validation:} This method is beneficial for its balance between computational efficiency and insight into the model's performance across different subsets of data. It's particularly useful when the dataset is large enough to be split multiple times but not so large that the process becomes computationally prohibitive.
-\item \textbf{Leave-One-Out Cross-Validation (LOOCV):} While offering detailed insight by using nearly all data for training, LOOCV can be computationally intensive, especially with very large datasets. It's best used when the dataset is small, and the computational cost is manageable.
-\item \textbf{Monte Carlo Cross-Validation:} This method introduces randomness in the selection of training and test sets, providing robustness against variance in dataset splits. It's preferred when the goal is to assess the model's performance across a wide range of potential training and testing scenarios, especially in datasets with inherent variability.
+\item \textbf{K-fold Cross-Validation:} The whole dataset is partitioned in k parts of equal size and each partition is called a fold. There are k parts and k can be any integer. One fold is used for validation and other K-1 folds are used for training the model. This method is beneficial for its balance between computational efficiency and insight into the model's performance across different subsets of data. It's particularly useful when the dataset is large enough to be split multiple times but not so large that the process becomes computationally prohibitive.
+\item \textbf{Leave-One-Out Cross-Validation (LOOCV):} Only 1 sample point is used as a validation set and the remaining n-1 samples are used in the training set. this is reapeated n times, where each time we take the next sample point. in a way you could see it as having to train the mode n times, each time having n set. While offering detailed insight by using nearly all data for training, LOOCV can be computationally intensive, especially with very large datasets. It's best used when the dataset is small, and the computational cost is manageable.
+\item \textbf{Monte Carlo Cross-Validation:} This is the one most would think of when testing and it involves splitting the whole data into training data and test data. This method introduces randomness in the selection of training and test sets, providing robustness against variance in dataset splits. It's preferred when the goal is to assess the model's performance across a wide range of potential training and testing scenarios, especially in datasets with inherent variability. The only thing to be careful is to keep the test and training data separate.
 \end{itemize}
 
 \subsection{Trade-Offs}
-The selection among these cross-validation techniques hinges on the dataset's size and the available computational resources. K-fold is generally preferred for its efficiency and balance, LOOCV for small datasets where computational expense is not a concern, and Monte Carlo for situations requiring robustness against data split variance. Each method offers a strategic approach to quantifying a model's ability to generalize, crucial for developing machine learning applications across various fields, including healthcare for predictive diagnostics, finance for risk assessment, and autonomous vehicles for navigation and safety protocols.
-
-
-\section{Ethical Considerations and Future Directions}
-From safeguarding privacy to ensuring AI systems are free from bias, the path forward requires thoughtful consideration. Meanwhile, the horizon is bright with advancements like autoML, langchain, ollama, etc, making AI more accessible, and deep learning pushing the boundaries of what's possible. As AI becomes a staple in our daily lives, enhancing decision-making and efficiency, we stand on the brink of a new era(and i'm loving it). Just a thought – if AI ever reaches general intelligence, let's hope they appreciate our use of reinforcement learning's \textbf{treat} more than they resent \textbf{stick}.
-
+The selection among these cross-validation techniques hinges on the dataset's size and the available computational resources. K-fold is generally preferred for its efficiency and balance, LOOCV for small datasets where computational expense is not a concern, and Monte Carlo for situations requiring robustness against data split variance. Each method offers a strategic approach to finding a model's ability to generalize, crucial for developing machine learning applications across various fields, including healthcare for predictive diagnostics, finance for risk assessment, and autonomous vehicles for navigation and safety protocols.
 
 \section{Conclusion}
-This report underscores the significance of understanding various machine learning methodologies and their application across different domains. The potential of machine learning to transform industries is immense, calling for ongoing research, some ethical scrutiny, and innovative thinking to unlock its full potential responsibly.
+
+This report underscores the significance of understanding various machine learning methodologies and their application across different domains. The potential of machine learning to transform industries is immense, even though it still needs research, some ethical scrutiny, and innovative thinking to unlock its full potential responsibly.
 
 
 
 \newpage
-\begin{thebibliography}{9}
+\section*{Vedlegg}
+\subsection*{Use of AI}
+AI - GPT4
+
+AI was used twice. Firstly, to create the bare LaTeX template before I started writing. AI was provided with the full text of Assignment 1 and asked to make a LaTeX template strictly adhering to the structure of the assignment. There have been no significant changes to the structure after that.
+
+Secondly, and mostly, AI was used for grammar and rewriting in a more formal tone, sometimes. This was with an explicit prompt to not add or remove any extra content or meaning.
+\subsubsection*{Example}
+The prompt used to make this correct this section as well as the rest is;
+\begin{itemize}
+  \item \textbf{USER:} Take this text and rewrite it to me in a slightly more formal tone, for a report. make sure to keep my style of writing. DO NOT add or remove any meaning from the text, just correct the grammar. return to me the corrected text and nothing else: \\
+  
+  AI - GPT4 \\
+  AI was used twice. \\
+  firstly to create the bare latex template to before i started writing. AI was provided with the full assignment 1 text and asked it to make a latex template striclty adheering to the structure of the assignment. there has been no significant changes to the structure after that.\\
+
+  Secondly and mostly AI was used for grammar, and rewriting in a more formal tone(somethimes). this was with explicit prompt to not add or remove any extra content or meaning.
+  \item \textbf{AI response:} AI - GPT4
+
+  AI was used twice. Firstly, to create the bare LaTeX template before I started writing. AI was provided with the full text of Assignment 1 and asked to make a LaTeX template strictly adhering to the structure of the assignment. There have been no significant changes to the structure after that.
+  
+  Secondly, and mostly, AI was used for grammar and rewriting in a more formal tone, sometimes. This was with an explicit prompt to not add or remove any extra content or meaning.
+  \end{itemize}
+
+
+
+
+\newpage
+\begin{thebibliography}{1}
   \bibitem{supervised-vs-unsupervised-learning}
   \url{https://www.ibm.com/blog/supervised-vs-unsupervised-learning/}
   \textit{IBM}
+
+  \bibitem{chatgpt4}
+  \url{https://chat.openai.com}
+  \textit{gpt4, mainly used for grammar, with explicit prompt to not add or lose any extra content or meaning}
+
+  \bibitem{distance-between-2-points}
+  \url{https://www.mathsisfun.com/algebra/distance-2-points.html}
+  \textit{to understand Distance betwwen two points}
+
+  \bibitem{k-nearest-neighbors}
+  \url{https://towardsdatascience.com/machine-learning-basics-with-the-k-nearest-neighbors-algorithm-6a6e71d01761}
+  \textit{read parts of it, might have influenced some points}
+
+  \bibitem{decision-trees-for-decision-making}
+  \url{https://hbr.org/1964/07/decision-trees-for-decision-making}
+  \textit{to understand decision trees from another perspective}
+
+  \bibitem{logistic-regression}
+  \url{https://www.geeksforgeeks.org/understanding-logistic-regression/}
+  \textit{to understand Logistic Regression}
+
+  \bibitem{hierarchical-clustering}
+  \url{https://towardsdatascience.com/understanding-the-concept-of-hierarchical-clustering-technique-c6e8243758ec}
+  \textit{hierarchical-clustering technique}
+
+  \bibitem{Cross-Validation}
+  \url{https://www.turing.com/kb/different-types-of-cross-validations-in-machine-learning-and-their-explanations}
+  \textit{Cross-Validation techniques}
+
 \end{thebibliography}
 \end{document}

@@ -1,3 +1,4 @@
+
 \documentclass[11pt, a4paper]{article}
 \usepackage{times}
 \usepackage{geometry}
@@ -6,9 +7,13 @@
 \usepackage{natbib}
 \usepackage{graphicx}
 \usepackage{amsmath}
+\usepackage{listings}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
 
 \title{Implementing and Analyzing k-Nearest Neighbor Algorithm for Diabetes Prediction on Pima Indians Dataset}
-\author{Student Name}
+\author{Gormery K. Wanjiru}
 \date{\today}
 
 \begin{document}
@@ -16,47 +21,78 @@
 \maketitle
 
 \begin{abstract}
-This report details the implementation and analysis of the k-Nearest Neighbors (k-NN) algorithm applied to the Pima Indians Diabetes Dataset for diabetes prediction. Unlike other machine learning techniques, k-NN makes predictions based on the proximity of data points, requiring no model training in the conventional sense. This study focuses on optimizing the k-NN algorithm's performance by experimenting with different values of k and training/testing splits, evaluating its efficacy through accuracy, precision, recall, specificity, and F1 score metrics. Through comprehensive analysis, this report seeks to provide insights into the k-NN algorithm's behavior and its potential as a tool for medical predictions, alongside discussing methodologies for data preparation, distance calculation, and performance evaluation in the context of binary classification problems.
+    could not make the full report in time, delivered this to be registered
 \end{abstract}
 
-\section{Introduction}
-The Pima Indians Diabetes Dataset, a well-known benchmark dataset in machine learning, comprises diagnostic measurements related to diabetes outcomes in Pima Indian individuals. This dataset presents an opportunity to implement and analyze the k-Nearest Neighbor (k-NN) algorithm, a simple yet powerful method for classification and regression tasks. This report explores the application of k-NN to predict diabetes, emphasizing understanding the algorithm's sensitivity to hyperparameters and data partition strategies. Through this analysis, the report aims to shed light on effective practices for applying k-NN in real-world scenarios, particularly in healthcare settings where predictive accuracy can significantly impact patient outcomes.
 
-\section{Dataset Description}
-The Pima Indians Diabetes Dataset features several medical predictor variables such as the number of pregnancies, plasma glucose concentration, diastolic blood pressure, triceps skinfold thickness, 2-hour serum insulin, body mass index, diabetes pedigree function, and age. The dataset's target variable indicates whether an individual has diabetes, making it an ideal case for binary classification. This study begins with a critical examination of the dataset, including preprocessing steps such as normalization and handling missing values, to prepare the data for the k-NN algorithm effectively.
 
-\section{Methodology}
-\subsection{Data Preparation}
-Data preparation involved loading the dataset using NumPy, followed by splitting it into training and testing sets. Initial splits of 70\% for training and 30\% for testing were chosen, with further experimentation with other splits to understand their impact on the model's performance. Critical preprocessing steps, including normalization and handling missing or zero values, were applied to ensure the dataset's suitability for the k-NN algorithm.
+\section{Python Code}
+\begin{lstlisting}[language=Python]
+    import numpy as np
+    from sklearn.model_selection import train_test_split
+    from sklearn.metrics import confusion_matrix, 
+        accuracy_score, precision_score, recall_score, f1_score
+    
+    def load_dataset(filename):
+        return np.genfromtxt(filename, delimiter=',')
+    
+    def euclidean_distance(instance1, instance2):
+        return np.sqrt(np.sum((instance1 - instance2) ** 2))
+    
+    def k_nearest_neighbors(train_data, test_instance, k):
+        distances = []
+        for index, train_instance in enumerate(train_data[:, :-1]):
+            dist = euclidean_distance(test_instance, train_instance)
+            distances.append((train_data[index], dist))
+        distances.sort(key=lambda x: x[1])
+        neighbors = [distances[i][0] for i in range(k)]
+        return neighbors
+    
+    def predict_classification(train_data, test_instance, k):
+        neighbors = k_nearest_neighbors(train_data, test_instance, k)
+        outputs = [neighbor[-1] for neighbor in neighbors]
+        prediction = max(set(outputs), key=outputs.count)
+        return prediction
+    
+    def kNN(train_data, test_data, k):
+        predictions = []
+        for test_instance in test_data[:, :-1]:
+            prediction = predict_classification(train_data, test_instance, k)
+            predictions.append(prediction)
+        return predictions
+    
+    def main():
+        # Load the dataset
+        data = load_dataset('diabetes.csv')
+        
+        # Split dataset into training and testing
+        train, test = train_test_split(data, test_size=0.3, random_state=42)
+        
+        # Define k
+        k_values = [3, 5, 7, 9]
+        results = {}
+        
+        # Testing different values of k
+        for k in k_values:
+            predicted_labels = kNN(train, test, k)
+            accuracy = accuracy_score(test[:, -1], predicted_labels)
+            precision = precision_score(test[:, -1], predicted_labels)
+            recall = recall_score(test[:, -1], predicted_labels)
+            specificity = (confusion_matrix(test[:, -1], predicted_labels)[0, 0] / 
+                           (confusion_matrix(test[:, -1], predicted_labels)[0, 0] + 
+                            confusion_matrix(test[:, -1], predicted_labels)[0, 1]))
+            f1 = f1_score(test[:, -1], predicted_labels)
+            results[k] = (accuracy, precision, recall, specificity, f1)
+        
+        for k, scores in results.items():
+            print(f'k={k}: Accuracy={scores[0]:.2f}, Precision={scores[1]:.2f}, Recall={scores[2]:.2f}, Specificity={scores[3]:.2f}, F1={scores[4]:.2f}')
+    
+    if __name__ == "__main__":
+        main()
+    
+\end{lstlisting}
 
-\subsection{k-Nearest Neighbors Implementation}
-The k-NN algorithm was implemented from scratch using NumPy. This included:
-\begin{itemize}
-    \item A function to calculate the Euclidean distance between two data points, enabling the identification of the nearest neighbors to a query instance.
-    \item A sorting mechanism to rank the training instances based on their distance to the query instance, facilitating the selection of the top-k nearest neighbors.
-    \item A majority voting system to predict the class of the query instance based on the most common class among its k-nearest neighbors.
-\end{itemize}
-
-\subsection{Performance Evaluation}
-The performance of the k-NN algorithm was evaluated using accuracy, precision, recall (sensitivity), specificity, and F1 score. These metrics provided a comprehensive view of the algorithm's effectiveness in classifying instances correctly. Additionally, the impacts of varying the value of k and adjusting the training/testing split ratios on these performance metrics were systematically explored.
-
-\section{Results}
-Detailed results, including tables and graphs, illustrated how changes in k and training/testing splits affected the model's accuracy, precision, recall, specificity, and F1 score. The optimal value of k was determined through iterative experimentation, balancing the bias-variance tradeoff inherent in the model's design. Similarly, different training/testing splits were evaluated to ascertain their impact on the model's ability to generalize to unseen data.
-
-\section{Discussion}
-The analysis revealed several key insights:
-\begin{enumerate}
-    \item The choice of k significantly affects the model's performance, with too small a value making the model sensitive to noise, and too large a value leading to underfitting.
-    \item Training/testing splits also play a crucial role in model performance, with larger training sets generally improving model accuracy up to a point, beyond which the returns diminish.
-    \item The k-NN algorithm's simplicity and lack of a training phase make it uniquely advantageous for certain applications, though it also presents challenges in terms of scalability and efficiency.
-\end{enumerate}
-
-\section{Conclusion and Future Work}
-This report provided a comprehensive analysis of the k-NN algorithm applied to the Pima Indians Diabetes Dataset, highlighting its potential for binary classification tasks in medical settings. Future work may explore feature selection and dimensionality reduction techniques to enhance model performance further, alongside investigating the algorithm's scalability and efficiency improvements.
 
 \section*{References}
-\begin{enumerate}
-    \item A thorough list of all academic references, datasets, and Python libraries utilized throughout the project.
-\end{enumerate}
 
 \end{document}
